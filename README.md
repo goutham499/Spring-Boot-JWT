@@ -1,34 +1,76 @@
-# Spring Boot 3.0 Security with JWT Implementation
-This project demonstrates the implementation of security using Spring Boot 3.0 and JSON Web Tokens (JWT). It includes the following features:
+1. Purpose
 
-## Features
-* User registration and login with JWT authentication
-* Password encryption using BCrypt
-* Role-based authorization with Spring Security
-* Customized access denied handling
-* Logout mechanism
-* Refresh token
+Build a secure backend system using Spring Boot 3 + Spring Security + JWT to handle authentication without sessions (stateless).
 
-## Technologies
-* Spring Boot 3.0
-* Spring Security
-* JSON Web Tokens (JWT)
-* BCrypt
-* Maven
- 
-## Getting Started
-To get started with this project, you will need to have the following installed on your local machine:
+2. Core Features
+User Authentication
+Register and login endpoints
+JWT issued after successful login
+Password Security
+Uses BCrypt to hash passwords (not stored in plain text)
+JWT Token System
+Access Token (short-lived)
+Refresh Token (used to generate new access tokens)
+Role-Based Authorization
+Different access levels (e.g., USER, ADMIN)
+Controlled using Spring Security configurations
+Logout Mechanism
+Invalidates tokens (usually via blacklist or DB flag)
+Exception Handling
+Custom responses for unauthorized/forbidden access
+3. Tech Stack
+Spring Boot 3 → Backend framework
+Spring Security → Authentication & authorization
+JWT → Stateless security mechanism
+BCrypt → Password hashing
+Maven → Build tool
+PostgreSQL → Database
+4. Project Flow
 
-* JDK 17+
-* Maven 3+
+Step 1: Registration
 
+User submits details
+Password hashed using BCrypt
+Stored in DB
 
-To build and run the project, follow these steps:
+Step 2: Login
 
-* Clone the repository: `git clone https://github.com/ali-bouali/spring-boot-3-jwt-security.git`
-* Navigate to the project directory: cd spring-boot-security-jwt
-* Add database "jwt_security" to postgres 
-* Build the project: mvn clean install
-* Run the project: mvn spring-boot:run 
+Credentials validated
+JWT token generated
+Token returned to client
 
--> The application will be available at http://localhost:8080.
+Step 3: Access Protected APIs
+
+Client sends JWT in header
+Server validates token
+Grants access based on roles
+
+Step 4: Token Refresh
+
+Refresh token used to get new access token
+
+Step 5: Logout
+
+Token invalidated (DB/blacklist approach)
+5. Setup Steps
+Clone repo
+Create PostgreSQL DB: jwt_security
+Configure DB in application.properties
+
+Build:
+
+mvn clean install
+
+Run:
+
+mvn spring-boot:run
+
+Access app:
+
+http://localhost:8080
+6. Key Files (Important Components)
+SecurityConfig.java → Security rules
+JwtService.java → Token creation & validation
+AuthController.java → Login/Register APIs
+UserDetailsServiceImpl.java → Load user from DB
+RefreshTokenService.java → Handle refresh tokens
